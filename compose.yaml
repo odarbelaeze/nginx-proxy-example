@@ -4,6 +4,13 @@ services:
     ports:
       - "5173:5173"
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+    develop:
+      watch:
+        - action: sync
+          path: ./ui/src
+          target: /app/src
+        - action: rebuild
+          path: ./ui/package.json
 
   api:
     build: ./api
@@ -11,3 +18,10 @@ services:
       - "8000:8000"
     command:
       ["uv", "run", "fastapi", "dev", "--host", "0.0.0.0", "src/example/api.py"]
+    develop:
+      watch:
+        - action: sync
+          path: ./api/src
+          target: /app/src
+        - action: rebuild
+          path: ./api/pyproject.toml
